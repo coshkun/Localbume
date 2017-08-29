@@ -3,3 +3,6 @@ Localbume is a location based iOS app, what makes you collect and archive your p
 
 #### Version 1.0
 * Position Finder Added
+
+#### Screenshot
+![localbume-launch-image](https://raw.githubusercontent.com/coshkun/localbume/master/Resources/Launch%20Images/Launch%20Image%202x.png)
