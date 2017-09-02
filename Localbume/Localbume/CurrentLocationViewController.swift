@@ -29,6 +29,11 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var location: CLLocation?
     var updatingLocation = false
     var lastLocationError: NSError?
+    // Reverse Geo variables
+    let geocoder = CLGeocoder()
+    var placemark: CLPlacemark?
+    var performingReverseGeocoding = false
+    var lastGeocodingError: NSError?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +83,26 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
                 stopLocationManager()
                 configureGetPositionButton()
             }
+            
+            // Start of re-geocoding
+            if !performingReverseGeocoding {
+                print("*** Going to geocode ***")
+                performingReverseGeocoding = true
+                // CLOSURE
+                geocoder.reverseGeocodeLocation(newLocation!, completionHandler: {
+                    placemarks, error in
+                    print("** Found placemarks \(placemarks), error: \(error)")
+                    self.lastGeocodingError = error
+                    if error == nil, let p = placemarks where !p.isEmpty {
+                        self.placemark = p.last!
+                    } else {
+                        self.placemark = nil
+                    }
+                    
+                    self.performingReverseGeocoding = false
+                    self.updateLabels()
+                })
+            }
         }
         
 
@@ -102,6 +127,9 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         } else {
             location = nil
             lastLocationError = nil
+            
+            placemark = nil
+            lastGeocodingError = nil
             
             startLocationManager()
             updateLabels()
@@ -144,6 +172,17 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
                 frm.dateFormat = "yyyy-MM-dd - HH:mm:ss"
                 messageLabel.text = "Updated on: \(frm.stringFromDate(location.timestamp))"
             }
+            // Adress label text
+            if let placemark = placemark {
+                addressLabel.text = string(from: placemark)
+            } else if performingReverseGeocoding {
+                addressLabel.text = "Searching for address.."
+            } else if lastGeocodingError != nil {
+                addressLabel.text = "Error finding address!"
+            } else {
+                addressLabel.text = "No Address Found."
+            }
+            // ** End of reverse geocoding
         } else {
             latitudeLabel.text = "?? - ????"
             longitudeLabel.text = "?? - ????"
@@ -174,6 +213,35 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             
             messageLabel.text = responseMessage
         }
+    }
+    
+    func string(from placemark: CLPlacemark) -> String {
+        // 1
+        var line1 = ""
+        //2
+        if let s = placemark.subThoroughfare {
+            line1 += s + " "
+        }
+        //3
+        if let s = placemark.thoroughfare {
+            line1 += s
+        }
+        //4
+        var line2 = ""
+        if let s = placemark.locality {
+            line2 += s + " "
+        }
+        if let s = placemark.administrativeArea {
+            line2 += s + " "
+        }
+        if let s = placemark.postalCode {
+            line2 += s + " - "
+        }
+        if let s = placemark.country {
+            line2 += s
+        }
+        
+        return line1 + "\n" + line2
     }
     
     func startLocationManager() {
