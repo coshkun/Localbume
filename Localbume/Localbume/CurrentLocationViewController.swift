@@ -162,6 +162,9 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     @IBAction func tagPosition_Action(sender: AnyObject) {
+        
+        //after we done here disable tagButton
+        tagButton.enabled = false
     }
     
     // MARK: - Helpers
@@ -201,12 +204,16 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             // Adress label text
             if let placemark = placemark {
                 addressLabel.text = string(from: placemark)
+                tagButton.enabled = true
             } else if performingReverseGeocoding {
                 addressLabel.text = "Searching for address.."
+                tagButton.enabled = false
             } else if lastGeocodingError != nil {
                 addressLabel.text = "Error finding address!"
+                tagButton.enabled = false
             } else {
                 addressLabel.text = "No Address Found."
+                tagButton.enabled = false
             }
             // ** End of reverse geocoding
         } else {
