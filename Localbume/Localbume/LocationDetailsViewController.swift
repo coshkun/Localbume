@@ -30,6 +30,7 @@ class LocationDetailsViewController: UITableViewController {
     
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var placemark: CLPlacemark?
+    var categoryName = "No Category"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,8 @@ class LocationDetailsViewController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         descriptionTextView.text = ""
-        categoryLabel.text = ""
+        categoryLabel.text = categoryName
+        
         let degOfLat = abs(Int(coordinate.latitude))
         let degOfLong = abs(Int(coordinate.longitude))
         let minOfLat = (abs(Double(coordinate.latitude)) - Double(degOfLat)) * 60
@@ -185,14 +187,26 @@ class LocationDetailsViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "CategoryPickerSegue" {
+            let controler = segue.destinationViewController as! CategoryPickerViewController
+            controler.selectedCategoryName = categoryName
+        }
     }
-    */
-
+    
+    // Capture the UNWIND SEGUE
+    @IBAction func categoryPickerDidPickedCategory(segue: UIStoryboardSegue) {
+        let controller = segue.sourceViewController as! CategoryPickerViewController
+        categoryName = controller.selectedCategoryName
+        categoryLabel.text = categoryName
+    }
 }
+
+
+
+
