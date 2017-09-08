@@ -339,5 +339,16 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             configureGetPositionButton()
         }
     }
+    
+    //MARK: - App Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "TagLocationSegue" {
+            let navcon = segue.destinationViewController as! UINavigationController
+            let con = navcon.topViewController as! LocationDetailsViewController
+            
+            con.coordinate = location!.coordinate
+            con.placemark = placemark
+        }
+    }
 }
 
