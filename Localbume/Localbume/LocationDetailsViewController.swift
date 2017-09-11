@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Dispatch
 
 private let dateFormatter: NSDateFormatter = {
     let formatter = NSDateFormatter()
@@ -53,6 +54,21 @@ class LocationDetailsViewController: UITableViewController {
             addressLabel.text = "No Address Found"
         }
         dateLabel.text = format(NSDate())
+        // Books way to disable KBD
+        //let aSelector = NSSelectorFromString("hideKeyboard")
+        let gr = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
+        gr.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(gr)
+    }
+    
+    @objc func hideKeyboard(gestureRecognizer: UITapGestureRecognizer){
+        let point = gestureRecognizer.locationInView(tableView)
+        let indexPath = tableView.indexPathForRowAtPoint(point)
+        
+        if indexPath != nil && indexPath!.section == 0 && indexPath!.row == 0 {
+            return
+        }
+        descriptionTextView.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,7 +82,19 @@ class LocationDetailsViewController: UITableViewController {
     }
     
     @IBAction func save_Action(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+        let hudView = HudView.hud(inView: navigationController!.view, animated: true)
+        hudView.text = "Tagged"
+        
+        // DISPATCH - Delayed Execution Tactics
+        let delayInSeconds = 0.6
+        let exeTime = dispatch_time(DISPATCH_TIME_NOW,
+                                    Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+        let mainQueue = dispatch_get_main_queue()
+        
+        dispatch_after(exeTime, mainQueue){
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        //dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Helpers
@@ -139,7 +167,32 @@ class LocationDetailsViewController: UITableViewController {
 
         return cell
     }
+
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if indexPath.section == 0 || indexPath.section == 1 {
+            return indexPath
+        } else {
+            return nil
+        }
+    }
     */
+    
+    /*
+    // My Way to Disable KBD
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        //super.scrollViewWillBeginDragging(scrollView)
+        
+        // Dismiss KBD
+        UIApplication.sharedApplication().sendAction("resignFirstResponder", to:nil, from:nil, forEvent:nil)
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            descriptionTextView.becomeFirstResponder()
+        }
+    }
+    */
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             return 88
