@@ -6,16 +6,76 @@
 //  Copyright © 2017 coskun. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    let coreDataFileName = "LocalbumeDB"
+    
+    
+    // Application Document Directory
+    lazy var appDocumentsDir: NSURL = {
+        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        return urls[0] as NSURL
+        }()
+    
+    lazy var managedObjectModel: NSManagedObjectModel = {
+        let modelURL = NSBundle.mainBundle().URLForResource("DataModel", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOfURL: modelURL)!
+    }()
+    
+    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+        let dbURL = self.appDocumentsDir.URLByAppendingPathComponent("\(self.coreDataFileName).sqlite")
+        
+        do {
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: dbURL, options: nil)
+        } catch let error as NSError {
+            print("Sorry.. there was an error while starting db: \(error.localizedDescription)")
+        }
+        return coordinator
+    }()
+    
+    // or shortly dbContex
+    lazy var managedObjectContext: NSManagedObjectContext = {
+    //    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the
+    //    application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to
+    //    fail.
+        let coordinator = self.persistentStoreCoordinator
+        var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType )
+        context.persistentStoreCoordinator = coordinator
+        return context
+    }()
+    
+    func saveContext() {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch let e as NSError {
+                print("Data Saving Error on Contex: \(e.localizedDescription)")
+                abort()
+            }
+        }
+    }
+    
+    /*
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "DataModel")
+        
+    }
+*/
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        let tabBarCon = window!.rootViewController as! UITabBarController
+        if let con = tabBarCon.viewControllers {
+            let currentLVC = con[0] as! CurrentLocationViewController
+            currentLVC.dbContext = managedObjectContext
+        }
         return true
     }
 

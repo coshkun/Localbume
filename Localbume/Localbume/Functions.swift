@@ -16,3 +16,8 @@ func afterDelay(seconds: Double, closure: () -> () ) {
     
     dispatch_after(exeTime, mainQueue, closure)
 }
+
+let appDocsDir: NSURL = {
+    let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+    return urls[0] as NSURL
+}()
