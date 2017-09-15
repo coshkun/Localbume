@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[0] as NSURL
         }()
-    
+    // MARK: - CoreData Constractors
     lazy var managedObjectModel: NSManagedObjectModel = {
         let modelURL = NSBundle.mainBundle().URLForResource("DataModel", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
@@ -62,13 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    /*
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "DataModel")
-        
-    }
-*/
-    
+    // MARK: - AppDelegate Standart Calls
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         let tabBarCon = window!.rootViewController as! UITabBarController
@@ -76,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let currentLVC = con[0] as! CurrentLocationViewController
             currentLVC.dbContext = managedObjectContext
         }
+        listenForFatalCoreDataNotifications()
         return true
     }
 
@@ -100,7 +95,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+    
+    // MARK: - Notification Listeners
+    func listenForFatalCoreDataNotifications() {
+        //1
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserverForName("MyMOCsaveDidFailNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
+            //2
+            let alert = UIAlertController(
+                title: "Internal Error",
+                message: "There was an fatal error in the app and it can not continue.\n\n"
+                + "Press OK to terminate. Sorry for inconvenience.",
+                preferredStyle: UIAlertControllerStyle.Alert)
+            //3
+            let action = UIAlertAction(title:"OK", style: .Default) { _ in
+                let exeption = NSException(
+                    name: "internalInconsistencyException",
+                    reason: "Fatal Core Data Error",
+                    userInfo: nil)
+                exeption.raise()
+            }
+            alert.addAction(action)
+            self.getViewControllerForShowingAlert().presentViewController(alert, animated: true, completion: nil)
+        })
+    }
+    
+    func getViewControllerForShowingAlert() -> UIViewController {
+        let rw = self.window!.rootViewController!
+        if let presented = rw.presentedViewController {
+            return presented
+        } else {
+            return rw
+        }
+    }
 }
 

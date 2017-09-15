@@ -33,6 +33,7 @@ class LocationDetailsViewController: UITableViewController {
     var placemark: CLPlacemark?
     var categoryName = "No Category"
     var dbContext: NSManagedObjectContext!
+    var date = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +55,7 @@ class LocationDetailsViewController: UITableViewController {
         } else {
             addressLabel.text = "No Address Found"
         }
-        dateLabel.text = format(NSDate())
+        dateLabel.text = format(date)
         // Books way to disable KBD
         //let aSelector = NSSelectorFromString("hideKeyboard")
         let gr = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
@@ -86,11 +87,27 @@ class LocationDetailsViewController: UITableViewController {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
         hudView.text = "Tagged"
         
-        // DISPATCH - Delayed Execution Tactics (Functions.swift)
-        afterDelay(0.6, closure: {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        })
-        //dismissViewControllerAnimated(true, completion: nil)
+        //1
+        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: self.dbContext!) as! Location
+        
+        location.locationDescription = descriptionTextView.text
+        location.category = categoryName
+        location.latitude = coordinate.latitude
+        location.longitude = coordinate.longitude
+        location.date = date
+        location.placemark = placemark
+        
+        do {
+            try dbContext.save()
+            // DISPATCH - Delayed Execution Tactics (Functions.swift)
+            afterDelay(0.6, closure: {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
+            //dismissViewControllerAnimated(true, completion: nil)
+        } catch let error as NSError {
+            //fatalError("Kayıt sırasında hata: \(error.localizedDescription)")
+            fatalCoreDateError(error)
+        }
     }
     
     // MARK: - Helpers

@@ -21,3 +21,15 @@ let appDocsDir: NSURL = {
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
     return urls[0] as NSURL
 }()
+
+//let MyMOCsaveDidFailNotification = NSNotification.Name(rawValue: "MyMOCsaveDidFailNotification")
+
+func fatalCoreDateError(error: NSError) {
+    let nc = NSNotificationCenter.defaultCenter()
+    nc.postNotificationName("MyMOCsaveDidFailNotification",
+                            object: nil,
+                            userInfo: ["message":"Sorry.. Deadly saving error. Pls, inform developer how did you do that.",
+                                        "date":NSDate()])
+
+    print("*** fatal Error: \(error)")
+}
