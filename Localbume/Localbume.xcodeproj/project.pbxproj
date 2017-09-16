@@ -18,8 +18,10 @@
 		D55AF7521F51A2010077AAF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D55AF7511F51A2010077AAF4 /* Assets.xcassets */; };
 		D55AF7551F51A2010077AAF4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D55AF7531F51A2010077AAF4 /* LaunchScreen.storyboard */; };
 		D56533E21F659F8800EEA396 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56533E11F659F8800EEA396 /* HudView.swift */; };
+		D5699C5C1F6C25210037FE02 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5699C5B1F6C25210037FE02 /* LocationsViewController.swift */; };
 		D5A3B8501F60983C0046199C /* LocationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A3B84F1F60983C0046199C /* LocationDetailsViewController.swift */; };
 		D5C8D2961F66447000817B9E /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C8D2951F66447000817B9E /* Functions.swift */; };
+		D5E3A9EE1F6CB87800646462 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3A9ED1F6CB87800646462 /* LocationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +38,10 @@
 		D55AF7541F51A2010077AAF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D55AF7561F51A2010077AAF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D56533E11F659F8800EEA396 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
+		D5699C5B1F6C25210037FE02 /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		D5A3B84F1F60983C0046199C /* LocationDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsViewController.swift; sourceTree = "<group>"; };
 		D5C8D2951F66447000817B9E /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		D5E3A9ED1F6CB87800646462 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,8 @@
 				D56533E11F659F8800EEA396 /* HudView.swift */,
 				D5C8D2951F66447000817B9E /* Functions.swift */,
 				D533F1DB1F679AAC00617A3B /* DataModel.xcdatamodeld */,
+				D5699C5B1F6C25210037FE02 /* LocationsViewController.swift */,
+				D5E3A9ED1F6CB87800646462 /* LocationCell.swift */,
 			);
 			path = Localbume;
 			sourceTree = "<group>";
@@ -164,7 +170,9 @@
 				D533F1DD1F679AAC00617A3B /* DataModel.xcdatamodeld in Sources */,
 				D533F1E11F67B39C00617A3B /* Location.swift in Sources */,
 				D55AF74D1F51A2010077AAF4 /* SecondViewController.swift in Sources */,
+				D5699C5C1F6C25210037FE02 /* LocationsViewController.swift in Sources */,
 				D56533E21F659F8800EEA396 /* HudView.swift in Sources */,
+				D5E3A9EE1F6CB87800646462 /* LocationCell.swift in Sources */,
 				D5C8D2961F66447000817B9E /* Functions.swift in Sources */,
 				D533F1E01F67B39C00617A3B /* Location+CoreDataProperties.swift in Sources */,
 				D55AF7491F51A2010077AAF4 /* AppDelegate.swift in Sources */,

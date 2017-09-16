@@ -116,6 +116,13 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
                         self.placemark = nil
                     }
                     
+                    // Address Validation (if user spots in the midle of the ocean)
+                    if let p = self.placemark {
+                        if p.thoroughfare == nil || p.thoroughfare!.isEmpty {
+                            self.placemark = nil
+                        }
+                    }
+                    
                     self.performingReverseGeocoding = false
                     self.updateLabels()
                 })
@@ -216,7 +223,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
                 tagButton.enabled = false
             } else {
                 addressLabel.text = "No Address Found."
-                tagButton.enabled = false
+                tagButton.enabled = true
             }
             // ** End of reverse geocoding
         } else {
