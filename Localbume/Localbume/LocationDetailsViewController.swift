@@ -28,6 +28,7 @@ class LocationDetailsViewController: UITableViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
+    @IBOutlet weak var navBarItem: UINavigationItem!
     
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var placemark: CLPlacemark?
@@ -35,12 +36,27 @@ class LocationDetailsViewController: UITableViewController {
     var dbContext: NSManagedObjectContext!
     var date = NSDate()
     
+    //Edit Mode
+    var descriptionText = ""
+    var locationToEdit: Location? {
+        didSet {
+            if let location = locationToEdit {
+                descriptionText = location.locationDescription
+                categoryName = location.category
+                date = location.date
+                coordinate = CLLocationCoordinate2D(latitude: location.latitude
+                    , longitude: location.longitude)
+                placemark = location.placemark
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        descriptionTextView.text = ""
+        descriptionTextView.text = descriptionText
         categoryLabel.text = categoryName
         
         let degOfLat = abs(Int(coordinate.latitude))
@@ -61,6 +77,13 @@ class LocationDetailsViewController: UITableViewController {
         let gr = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
         gr.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gr)
+        
+        // isEditMode
+        if let location = locationToEdit {
+            navBarItem.title = "Edit Location"
+        } else {
+            navBarItem.title = "Tag Location"
+        }
     }
     
     @objc func hideKeyboard(gestureRecognizer: UITapGestureRecognizer){
@@ -85,10 +108,16 @@ class LocationDetailsViewController: UITableViewController {
     
     @IBAction func save_Action(sender: UIBarButtonItem) {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
-        hudView.text = "Tagged"
         
-        //1
-        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: self.dbContext!) as! Location
+        let location: Location
+        if let tmp = locationToEdit {
+            hudView.text = "Updated"
+            location = tmp
+        } else {
+            hudView.text = "Tagged"
+            //1
+            location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: self.dbContext!) as! Location
+        }
         
         location.locationDescription = descriptionTextView.text
         location.category = categoryName

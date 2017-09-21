@@ -62,6 +62,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func getFetchRequest() -> NSFetchRequest {
+        let fetchRequest = NSFetchRequest(entityName: "Location")
+        // Set the batch size to a suitable number.
+        fetchRequest.fetchBatchSize = 20
+        let sortDesc = NSSortDescriptor(key: "date", ascending: false)
+        let sortDesc2 = NSSortDescriptor(key: "category", ascending: true)
+        fetchRequest.sortDescriptors = [sortDesc2, sortDesc]
+        //2
+        // let entity = Location().entity
+        // fetchRequest.entity = entity
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        return fetchRequest
+    }
+    
+    // FetchedResultsController
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        if self._frc != nil {
+            return self._frc!
+        }
+        
+        let fetchRequest = self.getFetchRequest()
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "category", cacheName: "Locations")
+        
+        // fetchedResultsController.delegate = self
+        self._frc = fetchedResultsController
+        return fetchedResultsController
+    }()
+    var _frc: NSFetchedResultsController? = nil
+    
     // MARK: - AppDelegate Standart Calls
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -71,6 +102,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             currentLVC.dbContext = managedObjectContext
             let locaLVC = (con[1] as! UINavigationController).viewControllers[0] as! LocationsViewController
             locaLVC.dbContext = managedObjectContext
+            locaLVC.fetchedResultsController = fetchedResultsController
+            let _ = locaLVC.view
+            let mapVC = con[2] as! MapViewController
+            mapVC.dbContext = managedObjectContext
         }
         listenForFatalCoreDataNotifications()
         return true
