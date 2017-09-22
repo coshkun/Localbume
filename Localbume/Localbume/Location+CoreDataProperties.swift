@@ -14,6 +14,10 @@ import CoreData
 import CoreLocation
 
 extension Location {
+    @nonobjc class func fetchRequest() -> NSFetchRequest {
+        let fr = NSFetchRequest(entityName: "Location")
+        return fr
+    }
 
     @NSManaged var category: String
     @NSManaged var date: NSDate

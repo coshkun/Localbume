@@ -15,7 +15,19 @@ class LocationsViewController: UITableViewController {
     // @IBOutlet weak var descriptionLabel: UILabel!
     // @IBOutlet weak var addressLabel: UILabel!
     
-    var dbContext: NSManagedObjectContext!
+    var dbContext: NSManagedObjectContext! {
+        didSet {
+            let nc = NSNotificationCenter.defaultCenter()
+            nc.addObserverForName("NSManagedObjectContextObjectsDidChange", object: dbContext, queue: NSOperationQueue.mainQueue()) { notification in
+                
+                if self.isViewLoaded() {
+                    self.performFetch()
+                    self.tableView.reloadData()
+                }
+                // End of Scope
+            }
+        }
+    }
     // var locations: [Location]?
     // local field for singleton pattern
     // var _frc: NSFetchedResultsController? = nil

@@ -10,12 +10,23 @@ import UIKit
 import MapKit
 import CoreData
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, UINavigationBarDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    var dbContext: NSManagedObjectContext!
     var locations = [Location]()
+    var dbContext: NSManagedObjectContext! {
+        didSet {
+            let nc = NSNotificationCenter.defaultCenter()
+            nc.addObserverForName("NSManagedObjectContextObjectsDidChange", object: dbContext, queue: NSOperationQueue.mainQueue()) { notification in
+                
+                if self.isViewLoaded() {
+                    self.updateLocations()
+                }
+                // End of Scope
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +94,7 @@ class MapViewController: UIViewController {
                         (topLeftCoord.latitude - bottomRightCoord.latitude) / 2,
                     longitude: topLeftCoord.longitude -
                         (topLeftCoord.longitude - bottomRightCoord.longitude) / 2)
-        let extraSpace = 1.1
+        let extraSpace = 1.2
         let span = MKCoordinateSpan(
             latitudeDelta: abs(topLeftCoord.latitude -
                 bottomRightCoord.latitude) * extraSpace,
@@ -96,18 +107,31 @@ class MapViewController: UIViewController {
     }
     
     func showLocationDetails(sender: UIButton){
-        print("Selector works with Tag: \(sender.tag)")
+        // print("Selector works with Tag: \(sender.tag)")
+        performSegueWithIdentifier("EditAnnotationSegue", sender: sender)
     }
     
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "EditAnnotationSegue" {
+            let itemIndex = (sender as! UIButton).tag
+            let navcon = segue.destinationViewController as! UINavigationController
+            let viewcon = navcon.viewControllers[0] as! LocationDetailsViewController
+            viewcon.dbContext = dbContext
+            let location = locations[itemIndex]
+            viewcon.locationToEdit = location
+        }
+        
     }
-    */
+    
+    // NavBar Fix
+    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
+        return .TopAttached
+    }
     
 
 }
