@@ -295,7 +295,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T5E-H8-W1k">
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T5E-H8-W1k">
                                                     <rect key="frame" x="509" y="6" width="56" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="56" id="HMH-4o-EC2"/>
@@ -445,6 +445,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addPhotoImageView" destination="T5E-H8-W1k" id="C6T-26-an5"/>
+                        <outlet property="addPhotoLabel" destination="xbu-CQ-tgV" id="qFG-2A-e4y"/>
                         <outlet property="addressLabel" destination="jS2-Bd-7sI" id="Sx5-h1-WOG"/>
                         <outlet property="cancelBarButton" destination="6jH-dj-qkY" id="HEq-QD-hy4"/>
                         <outlet property="categoryLabel" destination="otJ-p0-pGv" id="IbJ-uB-2OI"/>
@@ -683,6 +684,6 @@
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8Ml-M5-Eof"/>
+        <segue reference="BHF-e5-vAc"/>
     </inferredMetricsTieBreakers>
 </document>
