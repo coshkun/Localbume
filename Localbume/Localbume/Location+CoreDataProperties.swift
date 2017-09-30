@@ -12,6 +12,7 @@
 import Foundation
 import CoreData
 import CoreLocation
+import UIKit
 
 extension Location {
     @nonobjc class func fetchRequest() -> NSFetchRequest {
@@ -25,5 +26,5 @@ extension Location {
     @NSManaged var locationDescription: String
     @NSManaged var longitude: Double
     @NSManaged var placemark: CLPlacemark?
-
+    @NSManaged var photoID: NSNumber?
 }

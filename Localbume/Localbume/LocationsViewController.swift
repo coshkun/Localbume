@@ -15,7 +15,7 @@ class LocationsViewController: UITableViewController {
     // @IBOutlet weak var descriptionLabel: UILabel!
     // @IBOutlet weak var addressLabel: UILabel!
     
-    var dbContext: NSManagedObjectContext! {
+    var dbContext: NSManagedObjectContext! /* {
         didSet {
             let nc = NSNotificationCenter.defaultCenter()
             nc.addObserverForName("NSManagedObjectContextObjectsDidChange", object: dbContext, queue: NSOperationQueue.mainQueue()) { notification in
@@ -27,34 +27,57 @@ class LocationsViewController: UITableViewController {
                 // End of Scope
             }
         }
-    }
-    // var locations: [Location]?
+    } */
+    
+    var locations: [Location]? = nil
+    var kategoriler: [String]?
+    var data = [String:[Location]]()
     // local field for singleton pattern
-    // var _frc: NSFetchedResultsController? = nil
-    var fetchedResultsController: NSFetchedResultsController!
+    // var fetchedResultsController: NSFetchedResultsController!
     // let appDel = (UIApplication.sharedApplication().delegate as! AppDelegate)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = editButtonItem()
-        /*
-        let fetchRequest = getFetchRequest()
-        //4
-        do {
-            locations = try dbContext.executeFetchRequest(fetchRequest) as? [Location]
-        } catch let error as NSError {
-            print(error.localizedDescription)
-            // fatalCoreDateError(error)
-        }
-        */
-        fetchedResultsController.delegate = self
-        performFetch()
+
+        // fetchedResultsController.delegate = self
+        // performFetch()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        performFetch()
+        refreshData()
     }
+    
+    func getFetchRequest() -> NSFetchRequest {
+        let fetchRequest = NSFetchRequest(entityName: "Location")
+        // Set the batch size to a suitable number.
+        fetchRequest.fetchBatchSize = 20
+        let sortDesc = NSSortDescriptor(key: "date", ascending: false)
+        let sortDesc2 = NSSortDescriptor(key: "category", ascending: false)
+        fetchRequest.sortDescriptors = [sortDesc2, sortDesc]
+        //2
+        // let entity = Location().entity
+        // fetchRequest.entity = entity
+        // fetchRequest.returnsObjectsAsFaults = false
+        return fetchRequest
+    }
+    
+    // FetchedResultsController
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        if self._frc != nil {
+            return self._frc!
+        }
+        
+        let fetchRequest = self.getFetchRequest()
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.dbContext, sectionNameKeyPath: "category", cacheName: nil) // cacheName: "Locations"
+        
+        fetchedResultsController.delegate = self
+        self._frc = fetchedResultsController
+        return fetchedResultsController
+    }()
+    var _frc: NSFetchedResultsController? = nil
     
     func performFetch() {
         do {
@@ -63,7 +86,41 @@ class LocationsViewController: UITableViewController {
             fatalCoreDateError(e)
         }
     }
-
+    
+    func refreshData() {
+        let fetchRequest = getFetchRequest()
+        if locations != nil {
+            locations = nil
+        }
+        //4
+        do {
+        locations = try dbContext.executeFetchRequest(fetchRequest) as? [Location]
+        } catch let error as NSError {
+        print("Error on fetching: \(error.localizedDescription)")
+        // fatalCoreDateError(error)
+        }
+        
+        kategoriler = [String]()
+        for location in locations! {
+            if !(kategoriler!.contains(location.category)) {
+                kategoriler?.append(location.category)
+            }
+        }
+        
+        for kat in kategoriler! {
+            var loc = [Location]()
+            for itm in locations! {
+                if itm.category == kat {
+                    loc.append(itm)
+                }
+            }
+            data[kat] = loc
+        }
+        
+        //print(data.count)
+        //print("Kategoriler: \(kategoriler!.count)")
+        tableView.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -73,20 +130,44 @@ class LocationsViewController: UITableViewController {
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        let num = fetchedResultsController.sections!.count
-        return num
+        // if let sec = fetchedResultsController.sections {
+        //    return sec.count
+        // }
+        if let kats = kategoriler {
+            return kats.count
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let secInfo = fetchedResultsController.sections![section]
-        return secInfo.name
+        /*
+        if let sections = fetchedResultsController.sections {
+            let currentSec = sections[section]
+            return currentSec.name
+        } */
+        if let kats = kategoriler {
+            return kats[section] as String
+        }
+        return nil
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        let sectionInfo = fetchedResultsController.sections![section]
-        let objs = sectionInfo.objects!
-        return objs.count
+        /*
+        if let sections = fetchedResultsController.sections {
+            let currentSec = sections[section]
+            return currentSec.numberOfObjects
+        }
+        */
+        if let kats = kategoriler {
+            var cnt = 0
+            for itm in locations! {
+                if itm.category == kats[section] { cnt += 1 }
+            }
+            //print("Kısım: \(section) Adet: \(cnt)")
+            return cnt
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -96,10 +177,11 @@ class LocationsViewController: UITableViewController {
         } else {
             cell = LocationCell()
         }
-        
-        let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+        //let cell = tableView.dequeueReusableCellWithIdentifier("LocationProtoCell", forIndexPath: indexPath) as! LocationCell
+        //let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+        let locs = data[kategoriler![indexPath.section]]
+        let location = locs![indexPath.row]
             cell.configure(location)
-        
         return cell
     }
 
@@ -116,11 +198,16 @@ class LocationsViewController: UITableViewController {
         if editingStyle == .Delete {
             // Delete the row from the data source
             // tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            let location = fetchedResultsController.objectAtIndexPath(indexPath)
-            dbContext.deleteObject(location as! NSManagedObject)
+            // let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+            let location = locations![indexPath.row]
+            
+            location.removePhotoFile()
+            dbContext.deleteObject(location)
             do {
                 try dbContext.save()
             } catch let e as NSError { fatalCoreDateError(e) }
+            
+            refreshData()
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -154,7 +241,10 @@ class LocationsViewController: UITableViewController {
             
             viewCon.dbContext = dbContext
             if let indexPath = tableView.indexPathForCell(sender as! UITableViewCell) {
-                let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+                //let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+                //let location = locations![indexPath.row]
+                let locs = data[kategoriler![indexPath.section]]
+                let location = locs![indexPath.row]
                 viewCon.locationToEdit = location
             }
         }
@@ -177,23 +267,34 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
     func controller(controller: NSFetchedResultsController, didChange anObject: Any, at indexPath: NSIndexPath?, forType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
         switch type {
-        case .Insert:
+        case NSFetchedResultsChangeType.Insert:
             print(" *** inserting")
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .None)
-        case .Delete:
-                print(" *** deleting")
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-        case .Update:
+            if let InsertPath = newIndexPath {
+                self.tableView.insertRowsAtIndexPaths([InsertPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            
+        case NSFetchedResultsChangeType.Delete:
+            print(" *** deleting")
+            if let deletePath = indexPath {
+                self.tableView.deleteRowsAtIndexPaths([deletePath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            
+        case NSFetchedResultsChangeType.Update:
             print(" *** updating")
-        if let cell = self.tableView.cellForRowAtIndexPath(indexPath!) as? LocationCell {
-                let location = controller.objectAtIndexPath(indexPath!) as! Location
+            if let updatePath = indexPath {
+                let cell = self.tableView.cellForRowAtIndexPath(updatePath) as! LocationCell
+                let location = self.fetchedResultsController.objectAtIndexPath(updatePath) as! Location
                 cell.configure(location)
             }
             
-        case .Move:
+        case NSFetchedResultsChangeType.Move:
             print(" *** moving")
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .None)
+            if let deletePath = indexPath {
+                self.tableView.deleteRowsAtIndexPaths([deletePath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            if let InsertPath = newIndexPath {
+                self.tableView.insertRowsAtIndexPaths([InsertPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
         }
     }
     
@@ -202,15 +303,26 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
         switch type {
         case .Insert:
             print(" *** Inserting Section")
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .None)
+            let secIndexSet = NSIndexSet(index: sectionIndex)
+            self.tableView.insertSections(secIndexSet, withRowAnimation: .Automatic)
         case .Delete:
             print(" *** Deleting Section")
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .None)
-        case .Update:
+            let secIndexSet = NSIndexSet(index: sectionIndex)
+            self.tableView.deleteSections(secIndexSet, withRowAnimation: .Automatic)
+            /*
+            case .Update:
             print(" *** Updating Section (not implemented)")
-        case .Move:
+            case .Move:
             print(" *** Moving Section (not implemented)")
+            }
+            */
+        default:
+            ""
         }
+    }
+    
+    func controller(controller: NSFetchedResultsController, sectionIndexTitleForSectionName sectionName: String) -> String? {
+        return sectionName
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
@@ -218,11 +330,6 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
         self.tableView.endUpdates()
     }
 }
-
-
-
-
-
 
 
 

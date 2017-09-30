@@ -289,26 +289,24 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbu-CQ-tgV">
                                                     <rect key="frame" x="15" y="11" width="100" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="100" id="MhJ-ay-drQ"/>
+                                                        <constraint firstAttribute="width" constant="100" id="mjE-Lr-bje"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T5E-H8-W1k">
-                                                    <rect key="frame" x="509" y="6" width="56" height="32"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="56" id="HMH-4o-EC2"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="15" y="10" width="550" height="23"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="T5E-H8-W1k" firstAttribute="centerY" secondItem="NpW-ja-cSL" secondAttribute="centerY" id="3c7-7E-BG7"/>
-                                                <constraint firstItem="xbu-CQ-tgV" firstAttribute="top" secondItem="NpW-ja-cSL" secondAttribute="topMargin" constant="3" id="8he-rt-2yA"/>
-                                                <constraint firstItem="xbu-CQ-tgV" firstAttribute="leading" secondItem="NpW-ja-cSL" secondAttribute="leadingMargin" constant="7" id="Qfs-mb-bug"/>
-                                                <constraint firstItem="T5E-H8-W1k" firstAttribute="top" secondItem="NpW-ja-cSL" secondAttribute="topMargin" constant="-2" id="ZrV-Xd-wMC"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="T5E-H8-W1k" secondAttribute="trailing" constant="-6" id="f8n-jI-yGi"/>
-                                                <constraint firstItem="xbu-CQ-tgV" firstAttribute="centerY" secondItem="T5E-H8-W1k" secondAttribute="centerY" id="vVv-43-yuk"/>
+                                                <constraint firstItem="T5E-H8-W1k" firstAttribute="leading" secondItem="NpW-ja-cSL" secondAttribute="leading" constant="15" id="VdP-Uo-Pcu"/>
+                                                <constraint firstItem="xbu-CQ-tgV" firstAttribute="top" secondItem="NpW-ja-cSL" secondAttribute="top" constant="11" id="WeE-rV-AVP"/>
+                                                <constraint firstItem="xbu-CQ-tgV" firstAttribute="leading" secondItem="NpW-ja-cSL" secondAttribute="leading" constant="15" id="ae0-of-YJa"/>
+                                                <constraint firstItem="T5E-H8-W1k" firstAttribute="top" secondItem="NpW-ja-cSL" secondAttribute="top" constant="10" id="cTt-tG-UNU"/>
+                                                <constraint firstAttribute="trailing" secondItem="T5E-H8-W1k" secondAttribute="trailing" constant="2" id="hwc-Ra-y90"/>
+                                                <constraint firstAttribute="bottom" secondItem="xbu-CQ-tgV" secondAttribute="bottom" constant="11" id="pXs-10-4oK"/>
+                                                <constraint firstAttribute="bottom" secondItem="T5E-H8-W1k" secondAttribute="bottom" constant="10" id="xTX-cE-wTg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

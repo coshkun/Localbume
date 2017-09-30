@@ -53,6 +53,7 @@ class LocationDetailsViewController: UITableViewController {
     }
     //Photo Picker
     var image: UIImage?
+    var observer: AnyObject!
     
     
     override func viewDidLoad() {
@@ -85,9 +86,27 @@ class LocationDetailsViewController: UITableViewController {
         // isEditMode
         if let location = locationToEdit {
             navBarItem.title = "Edit Location"
+            if location.hasPhoto {
+                if let img = location.photoImage {
+                    show(img)
+                }
+            }
         } else {
             navBarItem.title = "Tag Location"
         }
+        
+        // Fix for photo on change device orientation
+        /*
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserverForName("UIDeviceOrientationDidChange", object: nil, queue: NSOperationQueue.mainQueue()) { _ in
+            
+            if self.isViewLoaded() {
+                self.tableView.reloadData()
+            }
+        }
+        */
+        // Background tasks
+        listenForBackgroundNotification()
     }
     
     @objc func hideKeyboard(gestureRecognizer: UITapGestureRecognizer){
@@ -113,7 +132,7 @@ class LocationDetailsViewController: UITableViewController {
     @IBAction func save_Action(sender: UIBarButtonItem) {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
         
-        let location: Location
+        var location: Location
         if let tmp = locationToEdit {
             hudView.text = "Updated"
             location = tmp
@@ -129,6 +148,20 @@ class LocationDetailsViewController: UITableViewController {
         location.longitude = coordinate.longitude
         location.date = date
         location.placemark = placemark
+        
+        //image ops
+        if let img = image {
+            if !location.hasPhoto {
+                location.photoID = Location.nextPhotoID() as NSNumber
+            }
+            if let data = UIImageJPEGRepresentation(img, 0.75) {
+                do {
+                    try data.writeToURL(location.photoURL, atomically: true)
+                } catch {
+                    print("Error while writing file: \(location.photoURL)")
+                }
+            }
+        }
         
         do {
             try dbContext.save()
@@ -221,6 +254,32 @@ class LocationDetailsViewController: UITableViewController {
             addressLabel.sizeToFit()
             addressLabel.frame.origin.x = view.bounds.size.width - addressLabel.frame.size.width - 15
             return addressLabel.frame.size.height + 20
+        } else if indexPath.section == 1 {
+            // resize for image
+            if addPhotoImageView.hidden {
+                return 44
+            } else {
+                let img = addPhotoImageView.image! as UIImage
+                // isEditMode
+                if let location = locationToEdit {
+                    if location.hasPhoto {
+                        if let _ = location.photoImage {
+                            return 220
+                        }
+                    }
+                }
+                
+                var nH:CGFloat = 24.0
+                var scl:CGFloat = 1.0
+                let w = img.size.width
+                let h = img.size.height
+
+                scl = addPhotoImageView.frame.width / w
+                nH = h * scl
+                
+                //addPhotoImageView.frame = CGRect(x: 15.0, y: 10.0, width: 550.0, height: Double(nH))
+                return round(nH) + 20
+            }
         } else {
             return 44
         }
@@ -243,6 +302,12 @@ class LocationDetailsViewController: UITableViewController {
         let controller = segue.sourceViewController as! CategoryPickerViewController
         categoryName = controller.selectedCategoryName
         categoryLabel.text = categoryName
+    }
+    
+    // MARK: - Destructor
+    deinit {
+        print("*** deinit \(self)")
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
     }
 }
 
@@ -290,7 +355,8 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
     func show(image: UIImage) {
         addPhotoImageView.image = image
         addPhotoImageView.hidden = false
-        addPhotoImageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
+        // addPhotoImageView.frame = CGRect(x: 15, y: 10, width: 260, height: 260)
+        addPhotoImageView.image = image
         addPhotoLabel.hidden = true
     }
     
@@ -301,12 +367,27 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
         if let img = image {
             show(img)
         }
-        
+        tableView.reloadData()
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // Background tasks
+    func listenForBackgroundNotification() {
+        let nc = NSNotificationCenter.defaultCenter()
+        observer = nc.addObserverForName("UIApplicationDidEnterBackground", object: nil, queue: NSOperationQueue.mainQueue()) {
+            [weak self] _ in
+            
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil {
+                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
+                }
+                strongSelf.descriptionTextView.resignFirstResponder()
+            }
+        }
     }
 }
 

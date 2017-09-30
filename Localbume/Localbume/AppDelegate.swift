@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let dbURL = self.appDocumentsDir.URLByAppendingPathComponent("\(self.coreDataFileName).sqlite")
+/* -> */print(dbURL.path) // DEBUG..!!!
         
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: dbURL, options: nil)
@@ -85,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let fetchRequest = self.getFetchRequest()
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "category", cacheName: "Locations")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "category", cacheName: nil) // cacheName: "Locations"
         
         // fetchedResultsController.delegate = self
         self._frc = fetchedResultsController
@@ -102,7 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             currentLVC.dbContext = managedObjectContext
             let locaLVC = (con[1] as! UINavigationController).viewControllers[0] as! LocationsViewController
             locaLVC.dbContext = managedObjectContext
-            locaLVC.fetchedResultsController = fetchedResultsController
+            // locaLVC.fetchedResultsController = fetchedResultsController
             let _ = locaLVC.view
             let mapVC = con[2] as! MapViewController
             mapVC.dbContext = managedObjectContext
