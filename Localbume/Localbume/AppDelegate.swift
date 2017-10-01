@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let dbURL = self.appDocumentsDir.URLByAppendingPathComponent("\(self.coreDataFileName).sqlite")
-/* -> */print(dbURL.path) // DEBUG..!!!
+/* -> */ //print(dbURL.path) // DEBUG..!!!
         
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: dbURL, options: nil)

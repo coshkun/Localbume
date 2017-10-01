@@ -199,7 +199,9 @@ class LocationsViewController: UITableViewController {
             // Delete the row from the data source
             // tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             // let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
-            let location = locations![indexPath.row]
+            // let location = locations![indexPath.row]
+            let locs = data[kategoriler![indexPath.section]]
+            let location = locs![indexPath.row]
             
             location.removePhotoFile()
             dbContext.deleteObject(location)
@@ -260,7 +262,7 @@ class LocationsViewController: UITableViewController {
 
 extension LocationsViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        print("*** controllerWillChangeContent")
+        // print("*** controllerWillChangeContent")
         self.tableView.beginUpdates()
     }
     
@@ -268,19 +270,19 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
         
         switch type {
         case NSFetchedResultsChangeType.Insert:
-            print(" *** inserting")
+            //print(" *** inserting")
             if let InsertPath = newIndexPath {
                 self.tableView.insertRowsAtIndexPaths([InsertPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
         case NSFetchedResultsChangeType.Delete:
-            print(" *** deleting")
+            //print(" *** deleting")
             if let deletePath = indexPath {
                 self.tableView.deleteRowsAtIndexPaths([deletePath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
         case NSFetchedResultsChangeType.Update:
-            print(" *** updating")
+            //print(" *** updating")
             if let updatePath = indexPath {
                 let cell = self.tableView.cellForRowAtIndexPath(updatePath) as! LocationCell
                 let location = self.fetchedResultsController.objectAtIndexPath(updatePath) as! Location
@@ -288,7 +290,7 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
             }
             
         case NSFetchedResultsChangeType.Move:
-            print(" *** moving")
+            //print(" *** moving")
             if let deletePath = indexPath {
                 self.tableView.deleteRowsAtIndexPaths([deletePath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
@@ -302,11 +304,11 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
         
         switch type {
         case .Insert:
-            print(" *** Inserting Section")
+            // print(" *** Inserting Section")
             let secIndexSet = NSIndexSet(index: sectionIndex)
             self.tableView.insertSections(secIndexSet, withRowAnimation: .Automatic)
         case .Delete:
-            print(" *** Deleting Section")
+            // print(" *** Deleting Section")
             let secIndexSet = NSIndexSet(index: sectionIndex)
             self.tableView.deleteSections(secIndexSet, withRowAnimation: .Automatic)
             /*
@@ -326,7 +328,7 @@ extension LocationsViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        print("*** controllerDidChangeContent")
+        // print("*** controllerDidChangeContent")
         self.tableView.endUpdates()
     }
 }

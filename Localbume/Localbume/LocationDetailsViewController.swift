@@ -306,7 +306,7 @@ class LocationDetailsViewController: UITableViewController {
     
     // MARK: - Destructor
     deinit {
-        print("*** deinit \(self)")
+        // print("*** deinit \(self)")
         NSNotificationCenter.defaultCenter().removeObserver(observer)
     }
 }
