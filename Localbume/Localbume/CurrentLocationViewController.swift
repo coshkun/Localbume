@@ -260,34 +260,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         }
     }
     
-    func string(from placemark: CLPlacemark) -> String {
-        // 1
-        var line1 = ""
-        //2
-        if let s = placemark.subThoroughfare {
-            line1 += s + " "
-        }
-        //3
-        if let s = placemark.thoroughfare {
-            line1 += s
-        }
-        //4
-        var line2 = ""
-        if let s = placemark.locality {
-            line2 += s + " "
-        }
-        if let s = placemark.administrativeArea {
-            line2 += s + " "
-        }
-        if let s = placemark.postalCode {
-            line2 += s + " - "
-        }
-        if let s = placemark.country {
-            line2 += s
-        }
-        
-        return line1 + "\n" + line2
-    }
     
     func startLocationManager() {
         if CLLocationManager.locationServicesEnabled() {
@@ -321,22 +293,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         } else {
             getButton.setTitle("Get My Position", forState: UIControlState.Normal)
         }
-    }
-    
-    func getSingOfLat(latitude: CLLocationDegrees) -> String {
-        var sng = "--"
-             if Double(latitude) < -0.00000833 { sng = "S" }
-        else if Double(latitude) >  0.00000833 { sng = "N" }
-        else { sng = "--" }
-        return sng
-    }
-    
-    func getSingOfLong(longitude: CLLocationDegrees) -> String {
-        var sng = "--"
-             if Double(longitude) < -0.00000833 { sng = "W" }
-        else if Double(longitude) >  0.00000833 { sng = "E" }
-        else { sng = "--" }
-        return sng
     }
     
     @objc func didTimeOut(){
