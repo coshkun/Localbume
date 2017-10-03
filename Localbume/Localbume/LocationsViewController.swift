@@ -15,6 +15,7 @@ class LocationsViewController: UITableViewController {
     // @IBOutlet weak var descriptionLabel: UILabel!
     // @IBOutlet weak var addressLabel: UILabel!
     
+    
     var dbContext: NSManagedObjectContext! /* {
         didSet {
             let nc = NSNotificationCenter.defaultCenter()

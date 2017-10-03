@@ -12,6 +12,7 @@ class LocationCell: UITableViewCell {
     
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var photoImageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,10 +33,24 @@ class LocationCell: UITableViewCell {
         }
         
         if let pmark = location.placemark {
-            addressLabel.text = stringToSingleLine(from: pmark)
+            //addressLabel.text = stringToSingleLine(from: pmark)
+            var text = ""
+            text.add(pmark.subThoroughfare)
+            text.add(pmark.thoroughfare, separatedBy: " ")
+            text.add(pmark.locality, separatedBy: ", ")
+            addressLabel.text = text
         } else {
             addressLabel.text = stringFromPosition(location.latitude, long: location.longitude)
         }
+        
+        photoImageView.image = thumbnailFor(location)
+    }
+    
+    func thumbnailFor(location: Location) -> UIImage {
+        if location.hasPhoto, let image = location.photoImage {
+            return image.resizedImage(withBounds: CGSize(width: 52, height: 52))
+        }
+        return UIImage()
     }
 
 }

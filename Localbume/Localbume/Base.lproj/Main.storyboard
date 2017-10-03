@@ -556,34 +556,44 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SE8-fY-0Wa">
-                                            <rect key="frame" x="8" y="30" width="584" height="17"/>
+                                            <rect key="frame" x="82" y="30" width="510" height="17"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="17" id="0L0-fa-0sa"/>
+                                                <constraint firstAttribute="height" constant="17" id="jB6-RT-IbU"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwF-bz-avD">
-                                            <rect key="frame" x="8" y="8" width="584" height="21"/>
+                                            <rect key="frame" x="82" y="8" width="510" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMa-XB-ERe">
+                                            <rect key="frame" x="15" y="2" width="52" height="52"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="52" id="FmF-zY-9if"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="YwF-bz-avD" firstAttribute="top" secondItem="Pq5-sN-ugD" secondAttribute="topMargin" id="4BE-Xe-enM"/>
-                                        <constraint firstItem="YwF-bz-avD" firstAttribute="leading" secondItem="Pq5-sN-ugD" secondAttribute="leadingMargin" id="9zY-cf-rZd"/>
-                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="top" secondItem="YwF-bz-avD" secondAttribute="bottom" constant="1" id="L00-ol-ZQv"/>
-                                        <constraint firstItem="YwF-bz-avD" firstAttribute="trailing" secondItem="Pq5-sN-ugD" secondAttribute="trailingMargin" id="T3Q-Ti-FAA"/>
-                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="bottom" secondItem="Pq5-sN-ugD" secondAttribute="bottomMargin" id="U4p-u8-VgD"/>
-                                        <constraint firstItem="YwF-bz-avD" firstAttribute="leading" secondItem="SE8-fY-0Wa" secondAttribute="leading" id="U9H-O2-zig"/>
-                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="trailing" secondItem="YwF-bz-avD" secondAttribute="trailing" id="orQ-bw-nWv"/>
+                                        <constraint firstItem="NMa-XB-ERe" firstAttribute="leading" secondItem="Pq5-sN-ugD" secondAttribute="leadingMargin" constant="7" id="3d8-TE-c3N"/>
+                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="leading" secondItem="YwF-bz-avD" secondAttribute="leading" id="6km-Rr-Xkx"/>
+                                        <constraint firstItem="NMa-XB-ERe" firstAttribute="centerY" secondItem="Pq5-sN-ugD" secondAttribute="centerY" id="GpB-mt-beK"/>
+                                        <constraint firstItem="YwF-bz-avD" firstAttribute="trailing" secondItem="SE8-fY-0Wa" secondAttribute="trailing" id="NI9-cM-ejA"/>
+                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="bottom" secondItem="Pq5-sN-ugD" secondAttribute="bottomMargin" id="NzO-rW-amH"/>
+                                        <constraint firstItem="SE8-fY-0Wa" firstAttribute="top" secondItem="YwF-bz-avD" secondAttribute="bottom" constant="1" id="OBq-Rn-jQ9"/>
+                                        <constraint firstItem="YwF-bz-avD" firstAttribute="leading" secondItem="NMa-XB-ERe" secondAttribute="trailing" constant="15" id="S15-2e-e0Z"/>
+                                        <constraint firstItem="YwF-bz-avD" firstAttribute="top" secondItem="Pq5-sN-ugD" secondAttribute="topMargin" id="b7i-gY-DTN"/>
+                                        <constraint firstItem="NMa-XB-ERe" firstAttribute="top" secondItem="Pq5-sN-ugD" secondAttribute="topMargin" constant="-6" id="kkx-fM-UDh"/>
+                                        <constraint firstItem="YwF-bz-avD" firstAttribute="trailing" secondItem="Pq5-sN-ugD" secondAttribute="trailingMargin" id="nkK-of-6gw"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="addressLabel" destination="SE8-fY-0Wa" id="ri5-TP-d5a"/>
                                     <outlet property="descriptionLabel" destination="YwF-bz-avD" id="ARa-01-g0G"/>
+                                    <outlet property="photoImageView" destination="NMa-XB-ERe" id="Oja-FP-5oe"/>
                                     <segue destination="CG7-qZ-tuj" kind="presentation" identifier="EditLocationSegue" id="BHF-e5-vAc"/>
                                 </connections>
                             </tableViewCell>
