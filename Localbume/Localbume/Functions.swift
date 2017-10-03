@@ -36,33 +36,31 @@ func fatalCoreDateError(error: NSError) {
 }
 
 // Addres Parsers
+func add(text: String?, toLine line:String, separatedBy separator:String) ->String {
+    var result = line
+    if let text = text {
+        if !line.isEmpty {
+            result += separator
+        }
+        result += text
+    }
+    return result
+}
+
 func string(from placemark: CLPlacemark) -> String {
     // 1
     var line1 = ""
+    line1 = add(placemark.subThoroughfare, toLine: line1, separatedBy: "")
     //2
-    if let s = placemark.subThoroughfare {
-        line1 += s + " "
-    }
+    line1 = add(placemark.thoroughfare, toLine: line1, separatedBy: " ")
     //3
-    if let s = placemark.thoroughfare {
-        line1 += s
-    }
-    //4
     var line2 = ""
-    if let s = placemark.locality {
-        line2 += s + " \n"
-    }
-    if let s = placemark.administrativeArea {
-        line2 += s + " "
-    }
-    if let s = placemark.postalCode {
-        line2 += s + " - "
-    }
-    if let s = placemark.country {
-        line2 += s
-    }
-    
-    return line1 + "\n" + line2
+    line2 = add(placemark.locality, toLine: line2, separatedBy: "")
+    line2 = add(placemark.administrativeArea, toLine: line2, separatedBy: " ")
+    line2 = add(placemark.postalCode, toLine: line2, separatedBy: " ")
+    line2 = add(placemark.country, toLine: line2, separatedBy: " ")
+    //4
+    return add(line2, toLine: line1, separatedBy: "\n")
 }
 
 func stringToSingleLine(from placemark: CLPlacemark) -> String {
