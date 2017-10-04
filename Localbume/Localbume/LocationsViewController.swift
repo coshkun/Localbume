@@ -43,6 +43,10 @@ class LocationsViewController: UITableViewController {
 
         // fetchedResultsController.delegate = self
         // performFetch()
+        // COLORIZING:
+        tableView.backgroundColor = UIColor(white: 11/255.0, alpha: 1.0)
+        tableView.separatorColor = UIColor(white: 0.0, alpha: 1.0)
+        tableView.indicatorStyle = .White
     }
     
     override func viewWillAppear(animated: Bool) {

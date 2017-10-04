@@ -96,6 +96,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - AppDelegate Standart Calls
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        // Customize visuals at first
+            customizeAppearance()
         // Override point for customization after application launch.
         let tabBarCon = window!.rootViewController as! UITabBarController
         if let con = tabBarCon.viewControllers {
@@ -132,6 +134,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    // MARK: - Customization Fuctions
+    func customizeAppearance() {
+        UINavigationBar.appearance().barTintColor = UIColor.blackColor()
+        UINavigationBar.appearance().titleTextAttributes = [ NSForegroundColorAttributeName : UIColor.whiteColor() ]
+        
+        UITabBar.appearance().barTintColor = UIColor.blackColor()
+        let tintColor = UIColor(red: 255/255.0,
+                                green: 238/255.0,
+                                blue: 136/255.0,
+                                alpha: 1.0)
+        UITabBar.appearance().tintColor = tintColor
     }
     
     // MARK: - Notification Listeners
