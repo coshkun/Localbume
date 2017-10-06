@@ -40,8 +40,11 @@ class CategoryPickerViewController: UITableViewController {
             }
         }
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        // COLORIZING:
+        tableView.backgroundColor = UIColor(white: 11/255.0, alpha: 1.0)
+        tableView.separatorColor = UIColor(white: 0.0, alpha: 1.0)
+        tableView.indicatorStyle = .White
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,6 +92,23 @@ class CategoryPickerViewController: UITableViewController {
             }
             selectedIndexPath = indexPath
         }
+    }
+    
+    // MARK: - TableView Colorizing Cells
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.backgroundColor = UIColor(white: 22/255.0, alpha: 1.0)
+        
+        if let textLabel = cell.textLabel {
+            textLabel.textColor = UIColor.whiteColor()
+            textLabel.highlightedTextColor = textLabel.textColor
+        }
+        if let detailLabel = cell.detailTextLabel {
+            detailLabel.textColor = UIColor(white: 1.0, alpha: 0.4)
+            detailLabel.highlightedTextColor = detailLabel.textColor
+        }
+        let selectionView = UIView(frame: CGRect.zero)
+        selectionView.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        cell.selectedBackgroundView = selectionView
     }
     
     /*

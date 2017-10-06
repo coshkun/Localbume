@@ -107,6 +107,18 @@ class LocationDetailsViewController: UITableViewController {
         */
         // Background tasks
         listenForBackgroundNotification()
+        
+        // COLORIZING:
+        tableView.backgroundColor = UIColor(white: 11/255.0, alpha: 1.0)
+        tableView.separatorColor = UIColor(white: 0.0, alpha: 1.0)
+        tableView.indicatorStyle = .White
+        
+        descriptionTextView.textColor = UIColor.whiteColor()
+        descriptionTextView.backgroundColor = UIColor.blackColor()
+        addPhotoLabel.textColor = UIColor.whiteColor()
+        addPhotoLabel.highlightedTextColor = addPhotoLabel.textColor
+        addressLabel.textColor = UIColor(white: 1.0, alpha: 0.4)
+        addressLabel.highlightedTextColor = addressLabel.textColor
     }
     
     @objc func hideKeyboard(gestureRecognizer: UITapGestureRecognizer){
@@ -236,6 +248,7 @@ class LocationDetailsViewController: UITableViewController {
     }
     */
     
+    // MARK: - TableView DataSource
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
             descriptionTextView.becomeFirstResponder()
@@ -244,7 +257,6 @@ class LocationDetailsViewController: UITableViewController {
             pickPhoto()
         }
     }
-
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
@@ -284,6 +296,29 @@ class LocationDetailsViewController: UITableViewController {
             return 44
         }
     }
+    
+    // MARK: - Colorizing TableView Cells
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.backgroundColor = UIColor(white: 22/255.0, alpha: 1.0)
+        
+        if let textLabel = cell.textLabel {
+            textLabel.textColor = UIColor.whiteColor()
+            textLabel.highlightedTextColor = textLabel.textColor
+        }
+        if let detailLabel = cell.detailTextLabel {
+            detailLabel.textColor = UIColor(white: 1.0, alpha: 0.4)
+            detailLabel.highlightedTextColor = detailLabel.textColor
+        }
+        if indexPath.row == 2 {
+            let addressLabel = cell.viewWithTag(100) as! UILabel
+            addressLabel.textColor = UIColor.whiteColor()
+            addressLabel.highlightedTextColor = addressLabel.textColor
+        }
+        let selectionView = UIView(frame: CGRect.zero)
+        selectionView.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        cell.selectedBackgroundView = selectionView
+        
+    }
 
     // MARK: - Navigation
 
@@ -315,7 +350,10 @@ class LocationDetailsViewController: UITableViewController {
 extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func takePhotoWithCamera() {
-        let imagePicker = UIImagePickerController()
+        //let imagePicker = UIImagePickerController()
+        let imagePicker = MyImagePickerController()
+        imagePicker.view.tintColor = view.tintColor
+        
         imagePicker.sourceType = .Camera
         imagePicker.delegate = self
         imagePicker.showsCameraControls = true
@@ -323,7 +361,10 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
     }
     
     func choosePhotoFromLibrary() {
-        let imagePicker = UIImagePickerController()
+        //let imagePicker = UIImagePickerController()
+        let imagePicker = MyImagePickerController()
+        imagePicker.view.tintColor = view.tintColor
+        
         imagePicker.sourceType = .PhotoLibrary
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
