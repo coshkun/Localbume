@@ -20,7 +20,7 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Position Finder" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
                                 <rect key="frame" x="180" y="279" width="241" height="42"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="36"/>
-                                <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <color key="textColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loaded by FirstViewController" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5M-7J-77L">
@@ -197,16 +197,24 @@
                     <tabBarItem key="tabBarItem" title="Tag Position" image="Tag" id="acW-dT-cKf"/>
                     <connections>
                         <outlet property="addressLabel" destination="qy3-c0-rt3" id="9yP-3m-4ti"/>
+                        <outlet property="addressTextLabel" destination="FoH-U6-p8N" id="go8-EL-j5f"/>
                         <outlet property="getButton" destination="zsx-ks-p0K" id="CVe-1B-1GC"/>
+                        <outlet property="latDegSym" destination="Ag0-5e-8WC" id="M0I-9j-vEJ"/>
                         <outlet property="latDegreeLabel" destination="USR-6i-MIH" id="hwx-Ta-Mxe"/>
+                        <outlet property="latMinSym" destination="B2o-4a-kJD" id="oU7-Fy-qvR"/>
                         <outlet property="latMinuteLabel" destination="jhz-DG-L71" id="GyT-AH-OvT"/>
                         <outlet property="latSingLabel" destination="n7H-tp-7L2" id="aRh-Rr-FIu"/>
+                        <outlet property="latTextLabel" destination="Bmt-If-H14" id="gOd-aw-94p"/>
                         <outlet property="latitudeLabel" destination="eNL-x0-Rqd" id="i89-cN-8iH"/>
+                        <outlet property="longDegSym" destination="JPB-WE-ZfO" id="PgU-H8-g5x"/>
                         <outlet property="longDegreeLabel" destination="pgb-OQ-1Ef" id="qtV-TN-M5F"/>
+                        <outlet property="longMinSym" destination="mAD-rg-v6Y" id="Kch-z2-Z6T"/>
                         <outlet property="longMinuteLabel" destination="7Re-aa-jV3" id="IkH-gH-jx7"/>
                         <outlet property="longSingLabel" destination="oUT-Fk-5Cq" id="bUj-Qj-2HY"/>
+                        <outlet property="longTextLabel" destination="mx8-U0-THU" id="zxf-Ll-RYc"/>
                         <outlet property="longitudeLabel" destination="JdN-T7-XZU" id="ODF-1I-rQv"/>
                         <outlet property="messageLabel" destination="A5M-7J-77L" id="2BJ-Wu-n6f"/>
+                        <outlet property="posFinderLabel" destination="KQZ-1w-vlD" id="R8b-TJ-K1J"/>
                         <outlet property="tagButton" destination="hAs-QL-QVB" id="bzt-4b-9bz"/>
                     </connections>
                 </viewController>
@@ -694,7 +702,7 @@
         <image name="User" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BHF-e5-vAc"/>
+        <segue reference="Lvj-Xe-Kcf"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.93333333333333335" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
 </document>

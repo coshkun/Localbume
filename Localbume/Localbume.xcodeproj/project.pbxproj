@@ -28,6 +28,7 @@
 		D5D310681F8465FE008FA0ED /* MyNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D310671F8465FE008FA0ED /* MyNavigationController.swift */; };
 		D5D3106A1F84682F008FA0ED /* MyImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D310691F84682F008FA0ED /* MyImagePickerController.swift */; };
 		D5E3A9EE1F6CB87800646462 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E3A9ED1F6CB87800646462 /* LocationCell.swift */; };
+		D5F061B71F87117000CCF8A6 /* Sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = D5F061B61F87117000CCF8A6 /* Sound.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		D5D310671F8465FE008FA0ED /* MyNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNavigationController.swift; sourceTree = "<group>"; };
 		D5D310691F84682F008FA0ED /* MyImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyImagePickerController.swift; sourceTree = "<group>"; };
 		D5E3A9ED1F6CB87800646462 /* LocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
+		D5F061B61F87117000CCF8A6 /* Sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sound.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		D55AF7471F51A2010077AAF4 /* Localbume */ = {
 			isa = PBXGroup;
 			children = (
+				D5F061B51F87117000CCF8A6 /* Sound */,
 				D5C1D2A01F73651E00A733B8 /* Location+CoreDataProperties.swift */,
 				D5C1D2A11F73651E00A733B8 /* Location.swift */,
 				D55AF7481F51A2010077AAF4 /* AppDelegate.swift */,
@@ -111,6 +114,14 @@
 				D5D310691F84682F008FA0ED /* MyImagePickerController.swift */,
 			);
 			path = Localbume;
+			sourceTree = "<group>";
+		};
+		D5F061B51F87117000CCF8A6 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				D5F061B61F87117000CCF8A6 /* Sound.caf */,
+			);
+			path = Sound;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,6 +190,7 @@
 			files = (
 				D55AF7551F51A2010077AAF4 /* LaunchScreen.storyboard in Resources */,
 				D55AF7521F51A2010077AAF4 /* Assets.xcassets in Resources */,
+				D5F061B71F87117000CCF8A6 /* Sound.caf in Resources */,
 				D55AF7501F51A2010077AAF4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
